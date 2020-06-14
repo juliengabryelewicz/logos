@@ -3,7 +3,7 @@ interface User {
   username: string;
 }
 
-interface Message {
+export interface Message {
   id: string;
   text: string;
   userFrom: string;
@@ -12,7 +12,7 @@ interface Message {
 
 export let user : User = {id:'', username: ''};
 
-export const messages = new Map<string, Message>();
+export let messages = Array<Message>();
 
 export default {
   user,

@@ -13,9 +13,5 @@ export function findResponseRegex(text: String): String  {
 	   } 
 	} 
 
-	/*if(text.search(/good morning/gi) != -1){
-	    response_text = "Good morning to you";
-	} */
-
   return response_text;
 }

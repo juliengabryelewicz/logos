@@ -24,8 +24,23 @@ form_chatbot.addEventListener('submit', function(evt){
 
 window.addEventListener('load', (event) => {
 	const url = '/session';
+	const url_message = '/messages';
 	fetch(url)
 		.then(function(data) {
+			fetch(url_message)
+				.then((resp) => resp.json())
+				.then(function(data) {
+					data.map(function(message) {
+						if(message.userFrom=="0"){
+							addNewMessageBot(message.text);
+						}else{
+							addNewMessageCustomer(message.text);
+						}
+					});
+				})
+				.catch(function(error) {
+					alert("Sorry we can't retrieve your session");
+				}); 
 		})
 		.catch(function(error) {
 			alert("Sorry we can't retrieve your session");

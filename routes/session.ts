@@ -18,7 +18,7 @@ router.get('/session', async (context) => {
 		let userName = await context.state.session.get("logos_userUsername");
 
 		context.state.me = {id: userId, username: userName};
-
+		
 		context.response.body = context.state.me;
 	} catch (e) {
 		console.log(e);

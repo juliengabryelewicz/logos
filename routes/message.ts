@@ -1,11 +1,13 @@
 import { Router, helpers } from 'https://deno.land/x/oak/mod.ts';
 import { v4 } from 'https://deno.land/std/uuid/mod.ts';
 import { findResponseRegex } from '../helpers/regex.ts';
+import { Message } from '../models/index.ts';
 
 const router = new Router();
 
-router.get('/messages', (context) => {
-  context.response.body = Array.from(context.state.messages.values());
+router.get('/messages', async (context) => {
+  let userId = await context.state.session.get("logos_userId");
+  context.response.body = context.state.messages.filter((message : Message) => message.userFrom === userId || message.userTo === userId);
 });
 
 router.post('/messages', async (context) => {
@@ -15,14 +17,16 @@ router.post('/messages', async (context) => {
     value: { text },
   } = await context.request.body();
 
-  context.state.messages.set(id, {
+  const messageUser = {
     id,
     text,
-    userFrom: context.state.me.id,
+    userFrom: await context.state.session.get("logos_userId"),
     userTo: "0",
-  });
+  };
 
-  context.response.body = context.state.messages.get(id);
+  context.state.messages.push(messageUser);
+
+  context.response.body = messageUser;
 });
 
 router.post('/messages_bot', async (context) => {
@@ -34,14 +38,16 @@ router.post('/messages_bot', async (context) => {
 
   text = findResponseRegex(text);
 
-  context.state.messages.set(id, {
+  const messageBot = {
     id,
     text,
     userFrom: "0",
-    userTo: context.state.me.id,
-  });
+    userTo: await context.state.session.get("logos_userId"),
+  };
 
-  context.response.body = context.state.messages.get(id);
+  context.state.messages.push(messageBot);
+
+  context.response.body = messageBot;
 });
 
 export default router;
