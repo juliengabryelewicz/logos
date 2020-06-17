@@ -1,6 +1,6 @@
 import { Router, helpers } from 'https://deno.land/x/oak/mod.ts';
 import { v4 } from 'https://deno.land/std/uuid/mod.ts';
-import { findResponseRegex } from '../helpers/regex.ts';
+import { findResponseRegex } from '../nlu/regex.ts';
 import { Message } from '../models/index.ts';
 
 const router = new Router();
