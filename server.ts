@@ -1,10 +1,10 @@
 import { Application } from 'https://deno.land/x/oak/mod.ts';
+import { APP_HOST, APP_PORT } from "./config.ts";
 import { Session } from "https://deno.land/x/session/mod.ts";
 
 import models from './models/index.ts';
 import routes from './routes/index.ts';
 
-const port = 8000;
 const app = new Application();
 
 const session = new Session({ framework: "oak" });
@@ -34,7 +34,7 @@ app.use(async (context) => {
 });
 
 app.addEventListener('listen', () => {
-  console.log(`Listening on: localhost:${port}`);
+  console.log(`Listening on: ${APP_HOST}:${APP_PORT}`);
 });
 
-await app.listen({ port });
+await app.listen(`${APP_HOST}:${APP_PORT}`);
