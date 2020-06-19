@@ -1,4 +1,4 @@
-export function findResponseRegex(text: String): String  {
+export function findResponseRegex(text: String): string  {
 
 	let response_text = "Sorry, I do not understand what you wrote";
 
