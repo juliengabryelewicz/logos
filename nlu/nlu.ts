@@ -3,29 +3,30 @@ import { NLU_TYPE } from "../config.ts";
 import { findResponseRasa } from "./rasa.ts";
 import { findResponseRegex } from "./regex.ts";
 import { findResponseSnips } from "./snips.ts";
+import { ResponseMessage } from "../models/index.ts";
 
-export async function findResponse(text: string): Promise<string>  {
+export async function findResponse(text: string): Promise<ResponseMessage>  {
 
-	let response_text = "";
+	let response;
 
 	switch(NLU_TYPE) {
 		case "rasa": {
-				 response_text = await findResponseRasa(text).then(res => {
+				 response = await findResponseRasa(text).then(res => {
 			 return res;
 			 })
 				 break;
 		}
 	   case "snips": {
-	        response_text = await findResponseSnips(text).then(res => {
+	        response = await findResponseSnips(text).then(res => {
 			  return res;
 		    })
 	        break;
 	   }
 	   default: {
-	      response_text = findResponseRegex(text);
+	      response = findResponseRegex(text);
 	      break;
 	   }
 	}
 
-	return response_text;
+	return response;
 }

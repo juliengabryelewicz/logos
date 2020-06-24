@@ -8,6 +8,14 @@ export interface Message {
   text: string;
   userFrom: string;
   userTo: string;
+  choices: Array<string>;
+  type: string;
+}
+
+export interface ResponseMessage {
+  text: string;
+  type: string;
+  choices: Array<string>;
 }
 
 export let user : User = {id:'', username: ''};

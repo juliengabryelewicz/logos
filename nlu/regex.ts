@@ -1,17 +1,21 @@
-export function findResponseRegex(text: String): string  {
+import { ResponseMessage } from "../models/index.ts";
+
+export function findResponseRegex(text: String): ResponseMessage  {
 
 	let response_text = "Sorry, I do not understand what you wrote";
+	let response_type = "SIMPLE";
+	let response_choices = Array<string>();
 
-	switch(true) { 
-	   case text.search(/good morning/gi) >= 0: { 
+	switch(true) {
+	   case text.search(/good morning/gi) >= 0: {
 	      response_text = "Good morning to you";
-	      break; 
-	   } 
-	   case text.search(/(hello|hey)/gi) >= 0: { 
+	      break;
+	   }
+	   case text.search(/(hello|hey)/gi) >= 0: {
 	      response_text = "hey you :)";
-	      break; 
-	   } 
-	} 
+	      break;
+	   }
+	}
 
-  return response_text;
+   return {text: response_text, type: response_type, choices: response_choices};
 }

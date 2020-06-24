@@ -18,10 +18,12 @@ router.post('/messages', async (context) => {
   } = await context.request.body();
 
   const messageUser = {
-    id,
-    text,
+    id: id,
+    text: text,
     userFrom: await context.state.session.get("logos_userId"),
     userTo: "0",
+    choices: [],
+    type: "SIMPLE"
   };
 
   context.state.messages.push(messageUser);
@@ -36,13 +38,15 @@ router.post('/messages_bot', async (context) => {
     value: { text },
   } = await context.request.body();
 
-  text = await findResponse(text);
+  let responseMessage = await findResponse(text);
 
   const messageBot = {
-    id,
-    text,
+    id: id,
+    text: responseMessage.text,
     userFrom: "0",
     userTo: await context.state.session.get("logos_userId"),
+    choices: responseMessage.choices,
+    type: responseMessage.type
   };
 
   context.state.messages.push(messageBot);
