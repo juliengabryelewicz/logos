@@ -7,10 +7,13 @@ const router = new Router();
 
 router.get('/messages', async (context) => {
   let userId = await context.state.session.get("logos_userId");
-  context.response.body = context.state.messages.filter((message : Message) => message.userFrom === userId || message.userTo === userId);
+  let userMessages = await context.state.session.get("logos_userMessages");
+  context.response.body = userMessages;
 });
 
 router.post('/messages', async (context) => {
+  let userMessages = await context.state.session.get("logos_userMessages");
+
   const id = v4.generate();
 
   const {
@@ -26,13 +29,15 @@ router.post('/messages', async (context) => {
     type: "SIMPLE"
   };
 
-  context.state.messages.push(messageUser);
+  userMessages.push(messageUser);
+  await context.state.session.set("logos_userMessages",userMessages);
 
   context.response.body = messageUser;
 });
 
 router.post('/messages_bot', async (context) => {
   const id = v4.generate();
+  let userMessages = await context.state.session.get("logos_userMessages");
 
   let {
     value: { text },
@@ -49,7 +54,8 @@ router.post('/messages_bot', async (context) => {
     type: responseMessage.type
   };
 
-  context.state.messages.push(messageBot);
+  userMessages.push(messageBot);
+  await context.state.session.set("logos_userMessages",userMessages);
 
   context.response.body = messageBot;
 });

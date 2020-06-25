@@ -25,9 +25,6 @@ export interface ResponseMessage {
 
 export let user : User = {id:'', username: ''};
 
-export let messages = Array<Message>();
-
 export default {
   user,
-  messages,
 };

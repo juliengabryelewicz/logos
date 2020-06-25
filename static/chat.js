@@ -23,6 +23,7 @@ window.addEventListener('load', (event) => {
 						}
 					});
 					removeAllChoices();
+					scrollToBottom();
 				})
 				.catch(function(error) {
 					alert("Sorry we can't retrieve your session");
@@ -47,6 +48,7 @@ function getNewMessageCustomer(text){
 	.then(function(res){
 		addNewMessageCustomer(res.text);
 		input_chatbot.value = "";
+		scrollToBottom();
 		getNewMessageBot(res.text);
 	})
 	.catch(function(res){ alert("Sorry we can't send your message"); });
@@ -65,6 +67,7 @@ function getNewMessageBot(text){
 	.then((resp) => resp.json())
 	.then(function(res){
 		addNewMessageBot(res);
+		scrollToBottom();
 	})
 	.catch(function(res){ alert("Sorry we can't get the bot's message"); });
 }
@@ -102,4 +105,8 @@ function removeAllChoices(){
 	document.querySelectorAll('.choice').forEach(choice => {
 		choice.remove();
 	});
+}
+
+function scrollToBottom(){
+	content_message.scrollTop = content_message.scrollHeight;
 }

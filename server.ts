@@ -10,10 +10,9 @@ const app = new Application();
 const session = new Session({ framework: "oak" });
 await session.init();
 
-app.use(async (ctx, next) => {
-  ctx.state = {
+app.use(async (context, next) => {
+  context.state = {
     me: models.user,
-    messages: models.messages,
   };
 
   await next();
