@@ -3,6 +3,11 @@ interface User {
   username: string;
 }
 
+export enum TypeMessage{
+  Simple = "SIMPLE",
+  Choices = "CHOICES"
+}
+
 export interface Message {
   id: string;
   text: string;
