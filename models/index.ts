@@ -5,7 +5,8 @@ interface User {
 
 export enum TypeMessage{
   Simple = "SIMPLE",
-  Choices = "CHOICES"
+  Choices = "CHOICES",
+  Calendar = "CALENDAR",
 }
 
 export interface Message {

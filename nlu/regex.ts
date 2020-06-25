@@ -19,7 +19,13 @@ export function findResponseRegex(text: String): ResponseMessage  {
 		 case text.search(/(help)/gi) >= 0: {
 				response_text = "how can i help you?";
 				response_type = TypeMessage.Choices;
-				response_choices = ["hey", "good morning"]
+				response_choices = ["hey", "good morning"];
+				break;
+		 }
+
+		 case text.search(/(i want to make an appointment)/gi) >= 0: {
+				response_text = "Sure, when?";
+				response_type = TypeMessage.Calendar;
 				break;
 		 }
 	}

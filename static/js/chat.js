@@ -1,9 +1,11 @@
 let content_message = document.querySelector('.logos-messages');
 let form_chatbot = document.querySelector('#logosForm');
 let input_chatbot = document.querySelector('#logosForm input');
+let calendar;
 
 form_chatbot.addEventListener('submit', function(evt){
 	evt.preventDefault();
+	removeAll();
 	getNewMessageCustomer(input_chatbot.value);
 });
 
@@ -22,7 +24,7 @@ window.addEventListener('load', (event) => {
 							addNewMessageCustomer(message.text);
 						}
 					});
-					removeAllChoices();
+					removeAll();
 					scrollToBottom();
 				})
 				.catch(function(error) {
@@ -84,25 +86,42 @@ function addNewMessageBot(response){
 	switch(response.type){
 		case "SIMPLE":
 			html_message = "<div class=\"message message-from\"><p class=\"message-text\">"+response.text+"</p></div>";
+			content_message.insertAdjacentHTML('beforeend', html_message);
+			break;
 		case "CHOICES":
 			html_message = "<div class=\"message message-from\"><p class=\"message-text\">"+response.text+"</p></div>";
 			html_message+= response.choices.map(choice => "<span class=\"choice\">"+choice+"</span>").join("");
+			content_message.insertAdjacentHTML('beforeend', html_message);
+			addEventListenerChoices();
+			break;
+		case "CALENDAR":
+			html_message = "<div class=\"message message-from\"><p class=\"message-text\">"+response.text+"</p></div>";
+			html_message+= "<div id=\"calendar\" class=\"vanilla-calendar\"></div>";
+			content_message.insertAdjacentHTML('beforeend', html_message);
+			calendar = new VanillaCalendar({
+			    selector: "#calendar",
+					datesFilter: false,
+					onSelect: (data, elem) => {
+							const date = new Date(data.date)
+							getNewMessageCustomer(date.toLocaleString());
+							removeAll();
+					}
+			});
+			break;
 	}
-	content_message.insertAdjacentHTML('beforeend', html_message);
-	addEventListenerChoices();
 }
 
 function addEventListenerChoices(){
 	document.querySelectorAll('.choice').forEach(item => {
 		item.addEventListener('click', (event) => {
 			getNewMessageCustomer(item.textContent);
-			removeAllChoices();
+			removeAll();
 		});
 	});
 }
 
-function removeAllChoices(){
-	document.querySelectorAll('.choice').forEach(choice => {
+function removeAll(){
+	document.querySelectorAll('.choice, #calendar').forEach(choice => {
 		choice.remove();
 	});
 }
