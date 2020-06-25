@@ -15,6 +15,13 @@ export function findResponseRegex(text: String): ResponseMessage  {
 	      response_text = "hey you :)";
 	      break;
 	   }
+
+		 case text.search(/(help)/gi) >= 0: {
+				response_text = "how can i help you?";
+				response_type = TypeMessage.Choices;
+				response_choices = ["hey", "good morning"]
+				break;
+		 }
 	}
 
    return {text: response_text, type: response_type, choices: response_choices};
