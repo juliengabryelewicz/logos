@@ -1,6 +1,7 @@
 import { Router } from 'https://deno.land/x/oak/mod.ts';
 import { v4 } from 'https://deno.land/std/uuid/mod.ts';
 import { Message } from '../models/index.ts';
+import { NUM_MESSAGES_SESSION } from "../config.ts";
 
 const router = new Router();
 
@@ -19,7 +20,7 @@ router.get('/session', async (context) => {
 		if (userMessages === undefined) {
 				await context.state.session.set("logos_userMessages", Array<Message>());
 		}else{
-			  await context.state.session.set("logos_userMessages", userMessages.slice(-20));
+			  await context.state.session.set("logos_userMessages", userMessages.slice(-NUM_MESSAGES_SESSION));
 		}
 
 		let userId = await context.state.session.get("logos_userId");
