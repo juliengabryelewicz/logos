@@ -103,7 +103,7 @@ function addNewMessageBot(response){
 					datesFilter: false,
 					onSelect: (data, elem) => {
 							const date = new Date(data.date)
-							getNewMessageCustomer(date.toLocaleString());
+							getNewMessageCustomer(date.toLocaleString("en-US", {year: "numeric", month: "numeric", day: "numeric"}));
 							removeAll();
 					}
 			});
