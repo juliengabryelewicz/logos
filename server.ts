@@ -2,6 +2,7 @@ import { Application } from 'https://deno.land/x/oak/mod.ts';
 import { APP_HOST, APP_PORT } from "./config.ts";
 import { Session } from "https://deno.land/x/session/mod.ts";
 
+import { createTable } from "./helpers/database.ts";
 import models from './models/index.ts';
 import routes from './routes/index.ts';
 
@@ -18,6 +19,8 @@ app.use(async (context, next) => {
   await next();
 });
 
+
+
 app.use(session.use()(session));
 
 app.use(routes.session.allowedMethods());
@@ -31,6 +34,8 @@ app.use(async (context) => {
     index: "index.html",
   });
 });
+
+createTable();
 
 app.addEventListener('listen', () => {
   console.log(`Listening on: ${APP_HOST}:${APP_PORT}`);

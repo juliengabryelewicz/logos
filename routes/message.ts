@@ -2,6 +2,7 @@ import { Router, helpers } from 'https://deno.land/x/oak/mod.ts';
 import { v4 } from 'https://deno.land/std/uuid/mod.ts';
 import { findResponse } from '../nlu/nlu.ts';
 import { Message } from '../models/index.ts';
+import { insertMessage } from "../helpers/database.ts";
 
 const router = new Router();
 
@@ -30,6 +31,7 @@ router.post('/messages', async (context) => {
   };
 
   userMessages.push(messageUser);
+  await insertMessage(messageUser);
   await context.state.session.set("logos_userMessages",userMessages);
 
   context.response.body = messageUser;
@@ -55,6 +57,7 @@ router.post('/messages_bot', async (context) => {
   };
 
   userMessages.push(messageBot);
+  await insertMessage(messageBot);
   await context.state.session.set("logos_userMessages",userMessages);
 
   context.response.body = messageBot;
