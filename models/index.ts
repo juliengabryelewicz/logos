@@ -7,6 +7,7 @@ export enum TypeMessage{
   Simple = "SIMPLE",
   Choices = "CHOICES",
   Calendar = "CALENDAR",
+  Slider = "SLIDER",
 }
 
 export interface Message {

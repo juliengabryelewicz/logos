@@ -82,20 +82,17 @@ function addNewMessageCustomer(text){
 function addNewMessageBot(response){
 
 	let html_message = "";
-
+	html_message = "<div class=\"message message-from\"><p class=\"message-text\">"+response.text+"</p></div>";
 	switch(response.type){
 		case "SIMPLE":
-			html_message = "<div class=\"message message-from\"><p class=\"message-text\">"+response.text+"</p></div>";
 			content_message.insertAdjacentHTML('beforeend', html_message);
 			break;
 		case "CHOICES":
-			html_message = "<div class=\"message message-from\"><p class=\"message-text\">"+response.text+"</p></div>";
 			html_message+= response.choices.map(choice => "<span class=\"choice\">"+choice+"</span>").join("");
 			content_message.insertAdjacentHTML('beforeend', html_message);
 			addEventListenerChoices();
 			break;
 		case "CALENDAR":
-			html_message = "<div class=\"message message-from\"><p class=\"message-text\">"+response.text+"</p></div>";
 			html_message+= "<div id=\"calendar\" class=\"vanilla-calendar\"></div>";
 			content_message.insertAdjacentHTML('beforeend', html_message);
 			calendar = new VanillaCalendar({
@@ -107,6 +104,13 @@ function addNewMessageBot(response){
 							removeAll();
 					}
 			});
+			break;
+		case "SLIDER":
+			html_message+= "<div class=\"slide-wrap\"><div class=\"slideshow\">";
+			html_message+= response.choices.map(choice => "<div class=\"slide-entry\"><div class=\"slide-content\">"+choice+"</div></div>").join("");
+			html_message+= "</div><ul class=\"slide-nav\"><li id=\"prev-slide\"><</li><li id=\"next-slide\">></li></ul></div>";
+			content_message.insertAdjacentHTML('beforeend', html_message);
+			startSlider();
 			break;
 	}
 }
@@ -121,7 +125,8 @@ function addEventListenerChoices(){
 }
 
 function removeAll(){
-	document.querySelectorAll('.choice, #calendar').forEach(choice => {
+	undoSlider();
+	document.querySelectorAll('.choice, #calendar, .slide-wrap').forEach(choice => {
 		choice.remove();
 	});
 }

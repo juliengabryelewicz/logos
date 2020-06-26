@@ -18,7 +18,7 @@ export async function insertMessage(message: Message){
 
 	if(USE_DATABASE){
 		await client.connect();
-		const result = await client.query("insert into Conversations (id, text, userFrom, userTo, choices, type) values ('"+message.id+"','"+message.text.replace(/(["'])/g, " ")+"','"+message.userFrom+"','"+message.userTo+"','"+message.choices.join(", ")+"','"+message.type+"')");
+		const result = await client.query("insert into Conversations (id, text, userFrom, userTo, choices, type) values ('"+message.id+"','"+message.text.replace(/(["'])/g, " ")+"','"+message.userFrom+"','"+message.userTo+"','"+message.choices.join(", ").replace(/(["'])/g, " ")+"','"+message.type+"')");
 		await client.end();
 	}
 
